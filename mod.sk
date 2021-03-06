@@ -1,0 +1,37 @@
+command /mod:
+        permission: skript.mod
+        permission message: &rUknown command. Type "/help" for help.
+        trigger:
+                if {buildState.%player%} exists:
+                        if {buildState.%player%} is 1:
+                                send "&8[&9Skript&8] [&6mod&8] [&6&lWarn&r&8] &7Please leave build mode to move to mod mode."
+                                exit
+                if {modState.%player%} is 0:
+                        send "&8[&9Skript&8] [&6mod&8] [&6&lWorking&r&8] &7Entering mod mode..."
+                        make player execute command "sv on"
+                        make console execute command "lp user %player% parent add moderator.active"
+                        set {modState.%player%} to 1
+                        #save inventory + Enderchest
+                        make console execute command "saveinv %player%"
+                        make console execute command "saveend %player%"
+                        make console execute command "clearinv %player%"
+                        make console execute command "clearend %player%"
+                        send "&8[&9Skript&8] [&6mod&8] [&a&lSuccess&r&8] &7You are now in mod mode."
+
+                else if {modState.%player%} is 1:
+                        send "&8[&9Skript&8] [&6mod&8] [&6&lWorking&r&8] &7Exiting mod mode..."
+                        make console execute command "gms %player%"
+                        make player execute command "home bed"
+                        make console execute command "lp user %player% parent remove moderator.active"
+                        make player execute command "sv off"
+                        set {modState.%player%} to 0
+                        #load inventory + Enderchest
+                        make console execute command "clearinv %player%"
+                        make console execute command "clearend %player%"
+                        make console execute command "loadinv %player%"
+                        make console execute command "loadend %player%"
+                        send "&8[&9Skript&8] [&6mod&8] [&a&lSuccess&r&8] &7You are no longer in mod mode."
+
+                else:
+                        send "&8[&9Skript&8] [&6mod&8] [&6&lWarn&r&8] &6 Mod State Not Found &7- If this is not your first time running this command please report this to math and explain how to recreate the bug."
+                        set {modState.%player%} to 0

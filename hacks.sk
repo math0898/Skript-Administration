@@ -1,0 +1,27 @@
+command /hacks1 <player>:
+        permission: pgui.use
+        permission message: &4You do not have access to that command
+        trigger:
+                if arg-1 is not set:
+                        send "Use /punish <player>"
+                else:
+                        send "&8[&9Skript&8] [&dHacks&8] &7Punishing &c%arg-1%"
+                        make player execute command "spartan tempban %arg-1% 1d &624 &9Hours&7: &7You have been banned for &c&lUSE OF A NON-WHITELISTED MODIFACTION&r&7!{line}If you believe this is in error please apply for an appeal at forum.darkstarmc.net"
+command /hacks2 <player>:
+        permission: pgui.use
+        permission message: &4You do not have access to that command
+        trigger:
+                if arg-1 is not set:
+                        send "Use /punish <player>"
+                else:
+                        send "&8[&9Skript&8] [&dHacks&8] &7Punishing &c%arg-1%"
+                        make player execute command "spartan tempban %arg-1% 1w &61 &9Week&7: &7You have been banned for &c&lUSE OF A NON-WHITELISTED MODIFCATION&r&7!{line}If you believe this is in error please apply for an appeal at forum.darkstarmc.net"
+command /hacks3 <player>:
+        permission: pgui.use
+        permission message: &4You do not have access to that command
+        trigger:
+                if arg-1 is not set:
+                        send "Use /punish <player>"
+                else:
+                        send "&8[&9Skript&8] [&dHacks&8] &7Punishing &c%arg-1%"
+                        make player execute command "spartan ban %arg-1% 1d &4&lFOREVER&r&7: &7You have been banned for &c&lUSE OF A NON-WHITELISTED MODIFCATION&r&7!{line}If you believe this is in error please apply for an appeal at forum.darkstarmc.net"

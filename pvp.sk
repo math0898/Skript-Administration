@@ -1,0 +1,48 @@
+command /kitpvp:
+        permission: skript.kitpvp
+        permission message: &rUknown command. Type "/help" for help.
+        trigger:
+                if {buildState.%player%} exists:
+                        if {buildState.%player%} is 1:
+                                send "&8[&9Skript&8] [&dkitpvp&8] [&6&lWarn&r&8] &7Please leave build mode to move to kitpvp mode."
+                                exit
+                if {modState.%player%} exists:
+                        if {modState.%player%} is 1:
+                                send "&8[&9Skript&8] [&dkitpvp&8] [&6&lWarn&r&8] &7Please leave mod mode to move to kitpvp mode."
+                                exit
+                if {pvpState.%player%} is 0:
+                        send "&8[&9Skript&8] [&dkitpvp&8] [&6&lWorking&r&8] &7Entering kitpvp mode..."
+                        make player execute command "pvp on"
+                        if group of player is "default":
+                                make console execute command "lp user %player% parent set kitpvp"
+                        else:
+                                make console execute command "lp user %player% parent add kitpvp"
+                        make console execute command "heal %player%"
+                        set {pvpState.%player%} to 1
+                        #save inventory + Enderchest
+                        make console execute command "saveinv %player%"
+                        make console execute command "saveend %player%"
+                        make console execute command "clearinv %player%"
+                        make console execute command "clearend %player%"
+                        make console execute command "mv tp %player% pvp"
+                        send "&8[&9Skript&8] [&dkitpvp&8] [&a&lSuccess&r&8] &7You are now in kitpvp mode."
+
+                else if {pvpState.%player%} is 1:
+                        send "&8[&9Skript&8] [&dkitpvp&8] [&6&lWorking&r&8] &7Exiting kit mode..."
+                        make console execute command "mv tp %player% world"
+                        if group of player is "kitpvp":
+                                make console execute command "lp user %player% parent set default"
+                        else:
+                                make console execute command "lp user %player% parent remove kitpvp"
+                        set {pvpState.%player%} to 0
+                        #load inventory + Enderchest
+                        make console execute command "clearinv %player%"
+                        make console execute command "clearend %player%"
+                        make console execute command "loadinv %player%"
+                        make console execute command "loadend %player%"
+                        make player execute command "pvp off"
+                        send "&8[&9Skript&8] [&dkitpvp&8] [&a&lSuccess&r&8] &7You are no longer in kitpvp mode."
+
+                else:
+                        send "&8[&9Skript&8] [&dkitpvp&8] [&6&lWarn&r&8] &6 Pvpkit State Not Found &7- If this is not your first time running this command please report this to math and explain how to recreate the bug."
+                        set {pvpState.%player%} to 0

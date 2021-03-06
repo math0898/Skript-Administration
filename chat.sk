@@ -1,0 +1,27 @@
+command /chat1 <player>:
+        permission: pgui.use
+        permission message: &4You do not have access to that command
+        trigger:
+                if arg-1 is not set:
+                        send "Use /punish <player>"
+                else:
+                        send "&8[&9Skript&8] [&dChat&8] &7Punishing &c%arg-1%"
+                        make player execute command "mute %arg-1% 1h You have been muted for 1hr for violating our global chat policies."
+command /chat2 <player>:
+        permission: pgui.use
+        permission message: &4You do not have access to that command
+        trigger:
+                if arg-1 is not set:
+                        send "Use /punish <player>"
+                else:
+                        send "&8[&9Skript&8] [&dChat&8] &7Punishing &c%arg-1%"
+                        make player execute command "mute %arg-1% 1d You have been muted for 1day for violating our global chat policies."
+command /chat3 <player>:
+        permission: pgui.use
+        permission message: &4You do not have access to that command
+        trigger:
+                if arg-1 is not set:
+                        send "Use /punish <player>"
+                else:
+                        send "&8[&9Skript&8] [&dChat&8] &7Punishing &c%arg-1%"
+                        make player execute command "spartan tempban %arg-1% 1d &624&9 Hours&r&7: &7You have been banned for &c&lCHAT VIOLATIONS&r&7!{line}If you believe this is in error please apply for an appeal at forum.darkstarmc.net"

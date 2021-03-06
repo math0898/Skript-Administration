@@ -1,0 +1,42 @@
+command /xray1 <player>:
+        permission: pgui.use
+        permission message: &4You do not have access to that command
+        trigger:
+                if arg-1 is not set:
+                        send "Use /punish <player>"
+                else:
+                        send "&8[&9Skript&8] [&dXray&8] &7Punishing &c%arg-1%"
+                        make console execute command "saveinv %arg-1%"
+                        make console execute command "clearinv %arg-1%"
+                        make console execute command "saveend %arg-1%"
+                        make console execute command "clearend %arg-1%"
+                        make console execute command "mv tp %arg-1% world"
+                        make player execute command "spartan tempban %arg-1% 1d &624 &9Hours&7: You have been banned for &c&lXray&r&7!{line}If you believe this is in error please apply for an appeal at forum.darkstarmc.net"
+command /xray2 <player>:
+        permission: pgui.use
+        permission message: &4You do not have access to that command
+        trigger:
+                if arg-1 is not set:
+                        send "Use /punish <player>"
+                else:
+                        send "&8[&9Skript&8] [&dXray&8] &7Punishing &c%arg-1%"
+                        make console execute command "saveinv %arg-1%"
+                        make console execute command "clearinv %arg-1%"
+                        make console execute command "saveend %arg-1%"
+                        make console execute command "clearend %arg-1%"
+                        make console execute command "mv tp %arg-1% world"
+                        make player execute command "spartan tempban %arg-1% 1w &61 &9Week&7: You have been banned for &c&lXray&r&7!{line}If you believe this is in error please apply for an appeal at forum.darkstarmc.net"
+command /xray3 <player>:
+        permission: pgui.use
+        permission message: &4You do not have access to that command
+        trigger:
+                if arg-1 is not set:
+                        send "Use /punish <player>"
+                else:
+                        send "&8[&9Skript&8] [&dXray&8] &7Punishing &c%arg-1%"
+                        make console execute command "saveinv %arg-1%"
+                        make console execute command "clearinv %arg-1%"
+                        make console execute command "saveend %arg-1%"
+                        make console execute command "clearend %arg-1%"
+                        make console execute command "mv tp %arg-1% world"
+                        make player execute command "spartan ban %arg-1% 1d &c&lFOREVER&r&7: You have been banned for &c&lXray&r&7!{line}If you believe this is in error please apply for an appeal at forum.darkstarmc.net"

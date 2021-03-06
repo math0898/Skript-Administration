@@ -1,0 +1,72 @@
+#This command is used mainly for testing and can be ignored for the most part
+command /showinv <player>:
+    permission: skript.inv
+    trigger:
+        if {stuff.%arg-1%::*} exists:
+            open chest with 6 rows named "Saved Inventory" to player
+            set {_slot} to -1
+            loop {stuff.%arg-1%::*}:
+                add 1 to {_slot}
+                set slot {_slot} of player's current inventory to loop-value
+        send "&8[&9Skript&8] [&cInv&8] [&6&lDev&r&8] &7This is %arg-1%'s saved inventory."
+#Save the player's inventory
+command /saveinv <player>:
+    permission: skript.inv
+    trigger:
+        clear {stuff.%arg-1%::*}
+        loop all items in arg-1's inventory:
+            add loop-item to {stuff.%arg-1%::*}
+        send "&8[&9Skript&8] [&cInv&8] [&a&lSuccess&r&8] &7%arg-1%'s inventory has been saved."
+#Load the player's inventory
+command /loadinv <player>:
+    permission: skript.inv
+    trigger:
+        if {stuff.%arg-1%::*} exists:
+            set {_slot} to -1
+            loop {stuff.%arg-1%::*}:
+                add 1 to {_slot}
+                set slot {_slot} of arg-1's inventory to loop-value
+        send "&8[&9Skript&8] [&cInv&8] [&a&lSuccess&r&8] &7%arg%'s inventory has been restored."
+#Clear  the player's inventory
+command /clearinv <player>:
+     permission: skript.inv
+     trigger:
+          clear arg-1's inventory
+          send "&8[&9Skript&8] [&cInv&8] [&a&lSuccess&r&8] &7%arg%'s inventory has been cleared."
+#This command is used mainly for testing and can be ignored for the most part
+command /showend <player>:
+     permission: skript.inv
+     trigger:
+          if {end.%arg-1%::*} exists:
+               open chest with 3 rows named "Saved Enderchest" to player
+               set {_slot} to -1
+               loop {end.%arg-1%::*}:
+                    add 1 to {_slot}
+                    set slot {_slot} of player's current inventory to loop-value
+          send "&8[&9Skript&8] [&cInv&8] [&6&lDev&r&8] &7This is %arg%'s saved enderchest."
+#save the player's enderchest
+command /saveend <player>:
+     permission: skript.inv
+     trigger:
+          clear {end.%arg-1%::*}
+          loop all items in arg-1's enderchest:
+               add loop-item to {end.%arg-1%::*}
+          send "&8[&9Skript&8] [&cInv&8] [&a&lSuccess&r&8] &7%arg%'s enderchest has been saved."
+#Load the player's enderchest
+command /loadend <player>:
+     permission: skript.inv
+     trigger:
+          if {end.%arg-1%::*} exists:
+               set {_slot} to -1
+               loop {end.%arg-1%::*}:
+                    add 1 to {_slot}
+                    set slot {_slot} of arg-1's enderchest to loop-value
+               send "&8[&9Skript&8] [&cInv&8] [&a&lSuccess&r&8] &7%arg%'s enderchest has been restored."
+          else:
+               send "&8[&9Skript&8] [&cInv&8] [&c&lERROR&r&8] &7Could not restore your enderchest. Please report this error and how to recreate it to math." to arg-1
+#clear the player's enderchest
+command /clearend <player>:
+     permission: skript.inv
+     trigger:
+          clear arg-1's enderchest
+          send "&8[&9Skript&8] [&cInv&8] [&a&lSuccess&r&8] &7%arg%'s enderchest has been cleared."

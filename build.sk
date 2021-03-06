@@ -1,0 +1,33 @@
+command /build:
+        permission: skript.build
+        permission message: &rUknown command. Type "/help" for help.
+        trigger:
+                if {buildState.%player%} exists:
+                        if {modState.%player%} is 1:
+                                send "&8[&9Skript&8] [&3Build&8] [&6&lWarn&r&8] &7Please leave mod mode to move to build mode."
+                                exit
+                if {buildState.%player%} is 0:
+                        send "&8[&9Skript&8] [&3Build&8] [&6&lWorking&r&8] &7Entering build mode..."
+                        set {buildState.%player%} to 1
+                        #Save inventory and enderchest
+                        make console execute command "saveinv %player%"
+                        make console execute command "saveend %player%"
+                        make console execute command "clearinv %player%"
+                        make console execute command "clearend %player%"
+                        make console execute command "gmc %player%"
+                        make console execute command "mv tp %player% flatroom"
+                        send "&8[&9Skript&8] [&3Build&8] [&a&lSuccess&r&8] &7You are now in build mode."
+                else if {buildState.%player%} is 1:
+                        send "&8[&9Skript&8] [&3Build&8] [&6&lWorking&r&8] &7Exiting build mode..."
+                        set {buildState.%player%} to 0
+                        make console execute command "gms %player%"
+                        #load inventory + Enderchest
+                        make console execute command "clearinv %player%"
+                        make console execute command "clearend %player%"
+                        make console execute command "loadinv %player%"
+                        make console execute command "loadend %player%"
+                        make console execute command "mv tp %player% world"
+                        send "&8[&9Skript&8] [&3Build&8] [&a&lSuccess&r&8] &7You are no longer in build mode."
+                else:
+                        send "&8[&9Skript&8] [&3Build&8] [&6&lWarn&r&8] &6 Build State Not Found &7- If this is not your first time running this command please report this to math and explain how to recreate the bug."
+                        set {buildState.%player%} to 0
