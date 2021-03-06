@@ -1,33 +1,96 @@
+# --------------------------------------------------
+# |                                                |
+# |           Administration - build               |
+# |                                                |
+# --------------------------------------------------
+# Description: This file handles the joining and leaving of build mode for
+# builders. It can also optionally teleport them to another world.
+#
+# This is basically the config section. To change a time enter it like <Number>
+# <Unit>. A few examples: 3 minutes, 15 seconds, 1 hour. To change damage, heal,
+# and chance values simply enter a number. A few examples: 50, 0.5, 1. To change
+# a true/false simply enter <true/false>. Examples:  true, false.
+
+options:
+
+        # General options
+        # Permission node to be used.
+        permission node : skript.administration.build
+
+        # Elevate permissions on active?
+        elevate : false
+        # Elevated permission group.
+        elevated group : active.builder
+
+        # Should builders be teleported on activate?
+        build on tp : true
+        # Teleport location (If enabled).
+        build on location : mv tp %player% flatroom
+        # Should builders be teleported on deactivate?
+        build off tp : true
+        # Teleport location (If enabled)
+        build off location : mv tp %player% world
+
+
+        # Message options
+        # TODO: Message frequency (None/Normal/Verbose). Players can also set
+        # their own. if they have not set one this one will be used.
+        message frequency : "normal"
+        # Administration prefix
+        admin prefix : &8[&9Skript&8]
+        # Build prefix
+        build prefix : &8[&3Build&8]
+        # Success
+        success : &8[&a&lSuccess&8]
+        # Warn
+        warn : &8[&6&lWarn&8]
+        # Working
+        working : &8[&6&lWorking&8]
+        # Message color
+        message color : &7
+
+
+# -----------------------------------------------------------------------------
+# Editing bellow this line may cause unintended effects. Please continue only if
+# you have sufficient general programming or scripting experience. For those not
+# experienced in Skript... its kind of odd so maybe this website can help...
+# http://en.njol.ch/projects/skript/doc/variables
+
+
+
 command /build:
-        permission: skript.build
-        permission message: &rUknown command. Type "/help" for help.
+        permission: "{@permission node}"
         trigger:
-                if {buildState.%player%} exists:
-                        if {modState.%player%} is 1:
-                                send "&8[&9Skript&8] [&3Build&8] [&6&lWarn&r&8] &7Please leave mod mode to move to build mode."
-                                exit
-                if {buildState.%player%} is 0:
-                        send "&8[&9Skript&8] [&3Build&8] [&6&lWorking&r&8] &7Entering build mode..."
-                        set {buildState.%player%} to 1
-                        #Save inventory and enderchest
+                if {state.%player%} does not exist:
+                        set {state.%player%} to "normal"
+                        send "{@admin prefix} {@build prefix} {@warn}{@message color} First run. Please let the admins know if any issues arise."
+                else if {state.%player%} is not "normal" or "build":
+                        send "{@admin prefix} {@build prefix} {@warn}{@message color} Please leave your active modes before switching to build mode. Are you in %{state.%player%}%{@message color}?"
+                        stop
+
+                if {state.%player%} is "normal":
+                        send "{@admin prefix} {@build prefix} {@working}{@message color} Entering build mode..."
+                        set {state.%player%} to "build"
+                        if {@elevate}:
+                                make console execute command "lp user %player% parent add {@elevated group}"
+                        if {@build on tp}:
+                                make console execute command "{@build on location}"
                         make console execute command "saveinv %player%"
                         make console execute command "saveend %player%"
                         make console execute command "clearinv %player%"
                         make console execute command "clearend %player%"
                         make console execute command "gmc %player%"
-                        make console execute command "mv tp %player% flatroom"
-                        send "&8[&9Skript&8] [&3Build&8] [&a&lSuccess&r&8] &7You are now in build mode."
-                else if {buildState.%player%} is 1:
-                        send "&8[&9Skript&8] [&3Build&8] [&6&lWorking&r&8] &7Exiting build mode..."
-                        set {buildState.%player%} to 0
-                        make console execute command "gms %player%"
-                        #load inventory + Enderchest
+                        send "{@admin prefix} {@build prefix} {@success}{@message color} You are now in build mode."
+                else if {state.%player%} is "build":
+                        send "{@admin prefix} {@build prefix} {@working}{@message color} Leave build mode..."
+                        set {state.%player%} to "normal"
+                        if {@elevate}:
+                                make console execute command "lp user %player% parent remove {@elevated group}"
+                        if {@build off tp}:
+                                make console execute command "{@build off location}"
                         make console execute command "clearinv %player%"
                         make console execute command "clearend %player%"
                         make console execute command "loadinv %player%"
                         make console execute command "loadend %player%"
-                        make console execute command "mv tp %player% world"
-                        send "&8[&9Skript&8] [&3Build&8] [&a&lSuccess&r&8] &7You are no longer in build mode."
-                else:
-                        send "&8[&9Skript&8] [&3Build&8] [&6&lWarn&r&8] &6 Build State Not Found &7- If this is not your first time running this command please report this to math and explain how to recreate the bug."
-                        set {buildState.%player%} to 0
+                        make console execute command "gms %player%"
+                        send "{@admin prefix} {@build prefix} {@success}{@message color} You are no longer in build mode."
